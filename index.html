@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <form action="process.php" method="GET">
+      <input type="text" name="search" placeholder="Поиск..." />
+      <input type="submit" value="Искать" />
+    </form>
+
+    <form action="process.php" method="POST">
+      <input type="text" name="name" placeholder="Имя" />
+      <input type="password" name="password" placeholder="password" />
+      <input type="email" name="email" placeholder="email" />
+      <input type="url" name="website" placeholder="url" />
+      <input type="number" name="age" min="0" max="150" placeholder="age" />
+      <input type="text" name="phone" pattern="[0-9]{10}" />
+
+      <input type="date" name="birthdate" placeholder="date" />
+      <input type="datetime-local" name="appointment" placeholder="datetime" />
+      <input type="time" name="time" placeholder="time" />
+      <input type="month" name="month" placeholder="month" />
+      <input type="week" name="week" placeholder="week" />
+      <input type="checkbox" name="agree" />
+      <input type="radio" name="gender" value="male" />
+      <input type="color" name="favcolor" placeholder="color" />
+      <input type="hidden" name="userID" value="12345" />
+      <input type="file" name="file" />
+      <input type="reset" value="Reset" />
+      <input type="button" value="Click Me" />
+      <textarea name="message"></textarea>
+      <select name="country">
+        <option value="RU">Россия</option>
+        <option value="US">США</option>
+      </select>
+      <button type="submit">Отправить</button>
+
+      <input type="submit" value="Отправить" />
+    </form>
+  </body>
+</html>
