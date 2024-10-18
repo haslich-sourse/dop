@@ -52,5 +52,17 @@
     <!-- Задание 3: Форма загрузки файла
 Создайте форму для загрузки файла, которая принимает только 
 изображения (JPEG или PNG) и проверяет, что размер файла не превышает 2 МБ. -->
+    <form action="upload.php" method="POST" enctype="multipart/form-data">
+      <label for="file">Выберите изображение:</label>
+      <input
+        type="file"
+        name="file"
+        id="file"
+        accept="image/jpeg,image/png"
+        required
+      />
+
+      <input type="submit" value="Загрузить" />
+    </form>
   </body>
 </html>
