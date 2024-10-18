@@ -1,41 +1,49 @@
 <?php
-// Проверяем, что данные были отправлены методом POST
+// Проверяем, что запрос был отправлен методом POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Получаем и фильтруем данные
-    $username = htmlspecialchars(trim($_POST['username']));
-    $rating = intval($_POST['rating']);
-    $review = htmlspecialchars(trim($_POST['review']));
- // Валидация данных
- if (empty($username)) {
-    echo "Пожалуйста, введите ваше имя.";
-} elseif ($rating < 1 || $rating > 5) {
-    echo "Оценка должна быть числом от 1 до 5.";
-} elseif (empty($review)) {
-    echo "Пожалуйста, оставьте отзыв.";
-} else {
-    // Если все данные корректны, их можно сохранить в базу данных
-    // Подключаемся к базе данных (например, через MySQLi или PDO)
-    // Пример через PDO:
-    try {
-        $pdo = new PDO('mysql:host=localhost;dbname=mydb', 'root', '');
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Получаем данные из формы
+    $order_id = htmlspecialchars(trim($_POST['order_id']));
+    $reason = isset($_POST['reason']) ? htmlspecialchars(trim($_POST['reason'])) : '';
 
-        // Подготовленный запрос для защиты от SQL-инъекций
-        $stmt = $pdo->prepare("INSERT INTO reviews (username, rating, review) VALUES (:username, :rating, :review)");
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':rating', $rating);
-        $stmt->bindParam(':review', $review);
+    // Проверка наличия номера заказа
+    if (empty($order_id)) {
+        echo "Номер заказа обязателен.";
+    } else {
+        try {
+            // Подключаемся к базе данных (используя PDO)
+            $pdo = new PDO('mysql:host=localhost;dbname=mydb', 'root', '');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Выполняем запрос
-        if ($stmt->execute()) {
-            echo "Спасибо за ваш отзыв!";
-        } else {
-            echo "Произошла ошибка при отправке отзыва.";
+            // Проверка, существует ли заказ и его текущий статус
+            $stmt = $pdo->prepare("SELECT status FROM orders WHERE order_id = :order_id");
+            $stmt->bindParam(':order_id', $order_id);
+            $stmt->execute();
+
+            // Получаем статус заказа
+            $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($order) {
+                if ($order['status'] !== 'cancelled') {
+                    // Обновляем статус заказа на "Отменен"
+                    $update_stmt = $pdo->prepare("UPDATE orders SET status = 'cancelled', cancel_reason = :reason WHERE order_id = :order_id");
+                    $update_stmt->bindParam(':reason', $reason);
+                    $update_stmt->bindParam(':order_id', $order_id);
+
+                    if ($update_stmt->execute()) {
+                        echo "Заказ успешно отменен.";
+                    } else {
+                        echo "Ошибка при отмене заказа.";
+                    }
+                } else {
+                    echo "Заказ уже был отменен ранее.";
+                }
+            } else {
+                echo "Заказ с указанным номером не найден.";
+            }
+        } catch (PDOException $e) {
+            echo "Ошибка подключения к базе данных: " . $e->getMessage();
         }
-    } catch (PDOException $e) {
-        echo "Ошибка подключения к базе данных: " . $e->getMessage();
     }
-}
 } else {
-echo "Неправильный метод запроса.";
+    echo "Неверный метод запроса.";
 }
