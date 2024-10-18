@@ -1,4 +1,9 @@
 <?php
+
+
+
+// Дальше код страницы
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['file'])) {
     $file = $_FILES['file'];
 

@@ -64,5 +64,16 @@
 
       <input type="submit" value="Загрузить" />
     </form>
+
+    <!-- Задание 4: Форма поиска
+Создайте форму поиска с одним полем для ввода поискового запроса. 
+Выведите результат в виде строки "Результаты поиска для: [запрос]". -->
+
+    <form action="search.php" method="GET">
+      <label for="query">Поисковый запрос:</label>
+      <input type="text" name="query" id="query" required />
+
+      <input type="submit" value="Поиск" />
+    </form>
   </body>
 </html>
