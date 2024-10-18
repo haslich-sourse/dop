@@ -31,5 +31,26 @@
       />
       <input type="submit" value="Регистрация" />
     </form>
+    <br />
+    <!-- Задание 2: Форма обратной связи
+Создайте форму обратной связи с полями для имени, email и сообщения.
+ Проверьте, что все поля заполнены, и сообщение не короче 20 символов. -->
+
+    <form action="feedback.php" method="POST">
+      <label for="username">Имя:</label>
+      <input type="text" name="username" id="username" required />
+
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" required />
+
+      <label for="message">Сообщение:</label>
+      <textarea name="message" id="message" required></textarea>
+
+      <input type="submit" value="Отправить" />
+    </form>
+
+    <!-- Задание 3: Форма загрузки файла
+Создайте форму для загрузки файла, которая принимает только 
+изображения (JPEG или PNG) и проверяет, что размер файла не превышает 2 МБ. -->
   </body>
 </html>
